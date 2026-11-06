@@ -1,0 +1,28 @@
+# --- Machine Learning & Scikit-learn ---
+scikit-learn>=1.2.0
+
+# --- NLP & Tiền Xử Lý Tiếng Việt ---
+underthesea>=6.0.0
+pyvi>=0.1.1
+emoji>=2.5.0
+
+# --- Xử Lý Dữ Liệu & Trực Quan Hóa ---
+pandas>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+tqdm>=4.65.0
+
+# --- Deep Learning & Transformers (Tuần 2-4) ---
+torch>=2.0.0
+transformers>=4.30.0
+datasets>=2.12.0
+accelerate>=0.20.0
+
+# --- Web Demo & Explainable AI (XAI) (Tuần 5) ---
+streamlit>=1.25.0
+lime>=0.2.0
+
+# --- Jupyter Notebook Environment ---
+jupyterlab
+notebook
