@@ -6,7 +6,6 @@ __pycache__/
 *.pyc
 
 # Data & Model weights (Lưu trữ riêng trên Google Drive)
-data/raw/*
 data/processed/*
 saved_models/*
 *.pth
