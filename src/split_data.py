@@ -22,10 +22,10 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 from src.preprocessing import preprocess_text
-
+from src.build_merged_dataset import build_merged_dataset
 def create_multilabel_dataset():
     print("=== BẮT ĐẦU QUY TRÌNH XỬ LÝ & PHÂN CHIA DỮ LIỆU ĐA NHÃN ===")
-    
+    """
     # 1. Tải các file ViHSD gốc
     raw_files = [
         "data/raw/train.csv",
@@ -90,7 +90,12 @@ def create_multilabel_dataset():
     # Lưu merged_dataset.csv tại data/raw/
     full_df.to_csv("data/raw/merged_dataset.csv", index=False, encoding="utf-8")
     print(f"- Đã lưu file hợp nhất tại data/raw/merged_dataset.csv ({len(full_df)} dòng)")
-    
+    */
+    """
+    # 1-3. Gộp ViHSD + ViCTSD về 4 nhãn [toxic, hate, spam, clean] (xem src/build_merged_dataset.py)
+    # Đổi spam_rules=True nếu nhóm đồng ý dùng luật gán nhãn spam (heuristic)
+    full_df = build_merged_dataset(use_victsd=True, spam_rules=False, save=True)
+    full_df = full_df.dropna(subset=["text_raw"]).reset_index(drop=True)
     # 4. Chạy qua pipeline tiền xử lý tạo cột text_processed
     print("\n--- Đang thực thi Pipeline tiền xử lý văn bản (Unicode, Teencode, Emoji, Tách từ)... ---")
     tqdm.pandas(desc="Tiền xử lý văn bản")
@@ -100,6 +105,18 @@ def create_multilabel_dataset():
     clean_mask = full_df["text_processed"].str.strip().str.len() > 0
     full_df = full_df[clean_mask].reset_index(drop=True)
     print(f"Số lượng mẫu hợp lệ sau tiền xử lý: {len(full_df)}")
+    # Loại câu TRÙNG nội dung (sau chuẩn hóa) để tránh rò rỉ dữ liệu giữa train/val/test.
+    n_before = len(full_df)
+    label_cols = ["toxic", "hate", "spam", "clean"]
+    conflict = full_df.groupby("text_processed")[label_cols].nunique().max(axis=1) > 1
+    full_df = full_df[~full_df["text_processed"].isin(conflict[conflict].index)]
+    full_df = full_df.drop_duplicates(subset=["text_processed"]).reset_index(drop=True)
+    print(f"Đã loại {n_before - len(full_df)} mẫu trùng/mâu thuẫn nhãn -> còn {len(full_df)}")
+
+    # Cảnh báo nếu có nhãn không có mẫu dương nào (vd: spam) -> pos_weight sẽ chia cho 0
+    for col in label_cols:
+        if full_df[col].sum() == 0:
+            print(f"!!! CẢNH BÁO: nhãn '{col}' không có mẫu dương nào.")
     
     # 5. Phân chia Stratified Split (80% Train, 10% Val, 10% Test)
     # Tạo nhãn phân tầng tổ hợp để đảm bảo tỷ lệ phân bổ các nhãn đồng đều
@@ -135,7 +152,9 @@ def create_multilabel_dataset():
     train_df.to_csv(train_path, index=False, encoding="utf-8")
     val_df.to_csv(val_path, index=False, encoding="utf-8")
     test_df.to_csv(test_path, index=False, encoding="utf-8")
-    
+        # Kiểm tra không rò rỉ giữa các tập
+    assert not set(train_df["text_processed"]) & set(test_df["text_processed"]), "Rò rỉ train/test"
+    assert not set(train_df["text_processed"]) & set(val_df["text_processed"]), "Rò rỉ train/val"
     print("\n=== KẾT QUẢ PHÂN CHIA TẬP DỮ LIỆU ===")
     print(f"- Train (80%): {len(train_df):,} mẫu -> {train_path}")
     print(f"- Val   (10%): {len(val_df):,} mẫu -> {val_path}")
