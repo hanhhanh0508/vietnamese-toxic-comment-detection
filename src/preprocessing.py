@@ -15,6 +15,7 @@ import re
 import json
 import unicodedata
 from typing import Dict, Optional
+import warnings 
 
 # Thử import công cụ tách từ tiếng Việt
 HAS_UNDERTHESEA = False
@@ -37,8 +38,9 @@ def load_dictionary(file_path: str) -> Dict[str, str]:
     if os.path.exists(file_path):
         with open(file_path, "r", encoding="utf-8") as f:
             return json.load(f)
+    # Báo rõ thay vì im lặng: thiếu từ điển -> bước tương ứng sẽ không có tác dụng
+    warnings.warn(f"Không tìm thấy từ điển: {file_path} (bước tương ứng sẽ bị bỏ qua)", stacklevel=2)
     return {}
-
 
 # Khởi tạo mặc định nếu đường dẫn tồn tại
 _DEFAULT_TEENCODE_PATH = os.path.join(
@@ -88,20 +90,30 @@ def clean_repeated_characters(text: str) -> str:
     return re.sub(r'(.)\1{2,}', r'\1', text)
 
 
-def convert_emoji(text: str, emoji_dict: Optional[Dict[str, str]] = None) -> str:
-    """
-    Ánh xạ các biểu tượng cảm xúc (Emoji) thành chuỗi tiếng Việt mô tả
-    Ví dụ: '😡' -> ' phẫn nộ '
-    """
+_VS16_RE = re.compile(r"[\ufe0e\ufe0f\u200d\U0001F3FB-\U0001F3FF]")  # variation selector, ZWJ, màu da
+# Dải ký tự emoji/biểu tượng phổ biến - dùng để dọn emoji CHƯA có trong từ điển
+_ANY_EMOJI_RE = re.compile(
+    "[\U0001F300-\U0001FAFF\u2600-\u27BF\u2B00-\u2BFF\u2190-\u21FF\u2300-\u23FF]+"
+)
+
+
+def convert_emoji(
+    text: str,
+    emoji_dict: Optional[Dict[str, str]] = None,
+    strip_unknown: bool = True,
+) -> str:
+    """Ánh xạ emoji thành từ mô tả tiếng Việt, ví dụ '😡' -> ' phẫn nộ '."""
     if not isinstance(text, str):
         return ""
     mapping = emoji_dict if emoji_dict is not None else GLOBAL_EMOJI_DICT
-    for emoji_char, replacement in mapping.items():
-        if emoji_char in text:
-            text = text.replace(emoji_char, f" {replacement.strip()} ")
+    text = _VS16_RE.sub("", text)
+    if mapping:
+        norm_map = {_VS16_RE.sub("", k): v.strip() for k, v in mapping.items()}
+        pattern = "|".join(re.escape(k) for k in sorted(norm_map, key=len, reverse=True))
+        text = re.sub(pattern, lambda m: f" {norm_map[m.group(0)]} ", text)
+    if strip_unknown:
+        text = _ANY_EMOJI_RE.sub(" ", text)
     return text
-
-
 def normalize_teencode(text: str, teencode_dict: Optional[Dict[str, str]] = None) -> str:
     """
     Chuẩn hóa các từ viết tắt, từ lóng, teencode dựa trên từ điển ánh xạ
@@ -152,7 +164,9 @@ def word_segment(text: str, engine: str = "underthesea") -> str:
         # Fallback nếu chưa cài thư viện
         return text
 
-
+def word_segmentation(text: str, engine: str = "underthesea") -> str:
+    """Tên hàm theo đúng bảng phân công Tuần 1 (SV2). Giữ `word_segment` làm alias."""
+    return word_segment(text, engine=engine)
 def preprocess_text(
     text: str,
     teencode_dict: Optional[Dict[str, str]] = None,
