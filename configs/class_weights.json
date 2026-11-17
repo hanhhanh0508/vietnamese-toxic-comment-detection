@@ -1,0 +1,18 @@
+{
+  "toxic": {
+    "pos_weight": 5.2706,
+    "alpha_focal": 0.8405
+  },
+  "hate": {
+    "pos_weight": 11.2482,
+    "alpha_focal": 0.9184
+  },
+  "spam": {
+    "pos_weight": null,
+    "alpha_focal": null
+  },
+  "clean": {
+    "pos_weight": 0.1897,
+    "alpha_focal": 0.1595
+  }
+}

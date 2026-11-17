@@ -4,6 +4,7 @@ venv/
 env/
 __pycache__/
 *.pyc
+*.pth
 
 # Data & Model weights (Lưu trữ riêng trên Google Drive)
 data/processed/*
@@ -25,3 +26,4 @@ saved_models/*
 # Archives & Temporary files
 *.zip
 chat.txt
+checkpoints/
