@@ -31,6 +31,7 @@ project-docs/
 ├── 04-ke-hoach-va-phan-cong/           # Quản lý tiến độ và phân chia công việc nhóm
 │   ├── lo-trinh-6-tuan.md              # Lộ trình tổng thể 6 tuần chi tiết từng mốc
 │   ├── phan-cong-tuan-1.md             # Kế hoạch phân chia 50-50 chi tiết Tuần 1
+│   ├── phan-cong-tuan-2.md             # Kế hoạch phân chia 50-50 Tuần 2 & Tổng kết Benchmark
 │   └── quy-trinh-git-va-backup.md      # Quy chuẩn Git workflow và chiến lược lưu trữ 2 tầng
 ├── 05-huong-dan-ky-thuat/              # Cẩm nang thực hành và xử lý lỗi
 │   ├── cai-dat-moi-truong.md           # Hướng dẫn thiết lập virtualenv và requirements.txt
@@ -57,6 +58,7 @@ project-docs/
 | | [thiet-ke-mo-hinh-va-loss.md](03-kien-truc-va-thiet-ke/thiet-ke-mo-hinh-va-loss.md) | Chi tiết kiến trúc mô hình PhoBERT, ViDeBERTa, Ensemble & Focal Loss |
 | **04. Kế hoạch & Phân công** | [lo-trinh-6-tuan.md](04-ke-hoach-va-phan-cong/lo-trinh-6-tuan.md) | Chi tiết kế hoạch hành động từng tuần từ Tuần 1 đến Tuần 6 |
 | | [phan-cong-tuan-1.md](04-ke-hoach-va-phan-cong/phan-cong-tuan-1.md) | Bảng phân chia 50-50 chi tiết các đầu mối bàn giao Tuần 1 |
+| | [phan-cong-tuan-2.md](04-ke-hoach-va-phan-cong/phan-cong-tuan-2.md) | Kế hoạch phân chia 50-50 Tuần 2 và Bảng đối sánh Benchmark Baseline |
 | | [quy-trinh-git-va-backup.md](04-ke-hoach-va-phan-cong/quy-trinh-git-va-backup.md) | Quy định Git branch, pull request review & chiến lược sao lưu Drive |
 | **05. Hướng dẫn kỹ thuật** | [cai-dat-moi-truong.md](05-huong-dan-ky-thuat/cai-dat-moi-truong.md) | Hướng dẫn cài đặt Python `venv` và các gói trong `requirements.txt` |
 | | [xu-ly-su-co-thuong-gap.md](05-huong-dan-ky-thuat/xu-ly-su-co-thuong-gap.md) | Cẩm nang fix lỗi 403 Hugging Face và lỗi bảng mã UTF-8 trên Windows Excel |
