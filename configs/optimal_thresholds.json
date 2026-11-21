@@ -1,0 +1,75 @@
+{
+  "phobert_base_v2": {
+    "optimal_thresholds": {
+      "toxic": 0.45,
+      "hate": 0.4,
+      "spam": 0.5,
+      "clean": 0.55
+    },
+    "default_threshold": 0.5,
+    "tuning_scope": "Validation set (data/processed/val.csv)",
+    "threshold_search_range": [
+      0.25,
+      0.75
+    ],
+    "threshold_step": 0.05,
+    "validation_results": {
+      "default": {
+        "macro_f1": 0.5792,
+        "active_macro_f1": 0.7723,
+        "per_label_f1": {
+          "toxic": 0.7032,
+          "hate": 0.6651,
+          "spam": 0.0,
+          "clean": 0.9485
+        }
+      },
+      "optimal": {
+        "macro_f1": 0.5988,
+        "active_macro_f1": 0.7984,
+        "per_label_f1": {
+          "toxic": 0.7321,
+          "hate": 0.7088,
+          "spam": 0.0,
+          "clean": 0.9542
+        },
+        "gain_macro_f1": "+0.0196",
+        "gain_active_macro_f1": "+0.0261"
+      }
+    },
+    "test_results": {
+      "default": {
+        "macro_f1": 0.5812,
+        "active_macro_f1": 0.775,
+        "exact_match": 0.8654,
+        "hamming_loss": 0.0503,
+        "per_label_f1": {
+          "toxic": 0.7099,
+          "hate": 0.6635,
+          "spam": 0.0,
+          "clean": 0.9515
+        }
+      },
+      "optimal": {
+        "macro_f1": 0.5985,
+        "active_macro_f1": 0.798,
+        "exact_match": 0.8712,
+        "hamming_loss": 0.0468,
+        "per_label_f1": {
+          "toxic": 0.7382,
+          "hate": 0.6994,
+          "spam": 0.0,
+          "clean": 0.9563
+        },
+        "gain_macro_f1": "+0.0173",
+        "gain_active_macro_f1": "+0.0230"
+      }
+    }
+  },
+  "best_thresholds": {
+    "toxic": 0.45,
+    "hate": 0.4,
+    "spam": 0.5,
+    "clean": 0.55
+  }
+}

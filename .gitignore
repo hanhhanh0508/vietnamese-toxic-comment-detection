@@ -4,16 +4,15 @@ venv/
 env/
 __pycache__/
 *.pyc
-*.pth
 
-# Data & Model weights (Lưu trữ riêng trên Google Drive)
-data/processed/*
+# Model weights (Dung lượng lớn >500MB, lưu trữ riêng trên Google Drive)
 saved_models/*
 *.pth
 *.bin
 *.onnx
 *.safetensors
 *.pt
+checkpoints/
 
 # Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
@@ -23,7 +22,5 @@ saved_models/*
 .vscode/
 .idea/
 
-# Archives & Temporary files
-*.zip
+# Temporary files
 chat.txt
-checkpoints/
