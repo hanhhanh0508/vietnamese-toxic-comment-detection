@@ -13,7 +13,9 @@ saved_models/*
 *.safetensors
 *.pt
 checkpoints/
-
+*.pth
+*.pt
+*.bin
 # Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
 *-checkpoint.ipynb
